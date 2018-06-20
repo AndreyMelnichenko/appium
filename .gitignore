@@ -111,3 +111,6 @@ $RECYCLE.BIN/
 allure-results/*
 .allure-results/*
 #untracked folders
+
+#Appium APK
+*.apk
