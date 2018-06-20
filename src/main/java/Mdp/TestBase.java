@@ -6,26 +6,29 @@ import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class TestBase {
-    protected AndroidDriver<AndroidElement> driver;
+
+    private AndroidDriver driver;
+    private static final String APP_NAME = "mdp.apk";
+    private static final String APP_PATH = "src/main/resources";
+    private static final String DEVICE_NAME = "Nexus10";
+    private static final String REMOTE_HOST = "http://127.0.0.1:4723/wd/hub";
+
     @BeforeClass
-    public void setUp () throws MalformedURLException, InterruptedException {
-        File f = new File("src/main/resources");
-        File fs = new File(f, "mdp.apk");
+    public void setUp () throws MalformedURLException {
+        File f = new File(APP_PATH);
+        File fs = new File(f, APP_NAME);
         DesiredCapabilities cap = new DesiredCapabilities();
-        cap.setCapability(MobileCapabilityType.DEVICE_NAME, "Nexus10");
-        System.out.println(fs);
+        cap.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
         cap.setCapability(MobileCapabilityType.APP, fs.getAbsolutePath());
-        driver = new AndroidDriver<>(new URL("http://127.0.0.1:4723/wd/hub"), cap);
-        driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
-        Thread.sleep(10);
-        driver.closeApp();
+        //cap.setCapability(MobileCapabilityType.PA, "modern_paper");
+        driver = new AndroidDriver(new URL(REMOTE_HOST), cap);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @AfterClass
