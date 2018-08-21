@@ -1,6 +1,7 @@
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -38,75 +39,101 @@ public class FirstTest {
     public void firstTest(){
         System.out.println("First test run");
         waitForElementAndClick(
-                "//*[contains(@text, 'Search Wikipedia')]",
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
                 "first input not found",
                 5);
         driver.hideKeyboard();
         waitForElementAndSendKeys(
-                "//*[contains(@text, 'Search…')]",
+                By.xpath("//*[contains(@text, 'Search…')]"),
                 "java",
                 "search area not found",
                 5);
         //List<WebElement> searchResults = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"));
         waitForElementAndClick(
-                "//*[@resource-id='org.wikipedia:id/page_list_item_description' and contains(@text, 'Object-oriented programming language')]",
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_description' and contains(@text, 'Object-oriented programming language')]"),
                 "Can't find a result",
                 15);
     }
 
     @Test
     public void cancelSearch(){
-        waitForElementByIdAndClick("org.wikipedia:id/search_container",
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
                 "first input not found",
                 5);
-        waitForElementByIdAndClick("org.wikipedia:id/search_close_btn",
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "java",
+                "search area not found",
+                5);
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "search area not found",
+                5);
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
                 "Can't find a result",
                 5);
-        waitForElementNotPresent("org.wikipedia:id/search_close_btn",
+        waitForElementNotPresent(
+                By.id("org.wikipedia:id/search_close_btn"),
                 "element presented",
                 5);
     }
 
-    private WebElement waitForElementByXpath(String xpath, String errMessage, int timeOut){
+    @Test
+    public void textComparing(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "java",
+                "search area not found",
+                5);
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_description' and contains(@text, 'Object-oriented programming language')]"),
+                "Can't find a result",
+                15);
+        WebElement element = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "search area not found"
+        );
+        Assert.assertEquals("We see unexpexted text",element.getAttribute("text"),"Java (programming language)");
+    }
+
+    private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
-        By by = By.xpath(xpath);
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    private WebElement waitForElementByXpath(String xpath, String errMessage){
-        return waitForElementByXpath(xpath, errMessage,5);
+    private WebElement waitForElementPresent(By by, String errMessage){
+        return waitForElementPresent(by, errMessage,5);
     }
 
-    private WebElement waitForElementAndClick(String xpath, String errMessage, int timeOut){
-        WebElement element = waitForElementByXpath(xpath,errMessage,timeOut);
+    private WebElement waitForElementAndClick(By by, String errMessage, int timeOut){
+        WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.click();
         return element;
     }
 
-    private WebElement waitForElementAndSendKeys(String xpath, String value, String errMessage, int timeOut){
-        WebElement element = waitForElementByXpath(xpath,errMessage,timeOut);
+    private WebElement waitForElementAndSendKeys(By by, String value, String errMessage, int timeOut){
+        WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.sendKeys(value);
         return element;
     }
 
-    private WebElement waitForElementPresentById(String id, String errMessage, int timeOut){
+    private boolean waitForElementNotPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
-        By by = By.id(id);
-        return wait.until(ExpectedConditions.presenceOfElementLocated(by));
-    }
-
-    private WebElement waitForElementByIdAndClick(String id, String errMessage, int timeOut){
-        WebElement element = waitForElementPresentById(id,errMessage,timeOut);
-        element.click();
-        return element;
-    }
-
-    private boolean waitForElementNotPresent(String id, String errMessage, int timeOut){
-        WebDriverWait wait = new WebDriverWait(driver,timeOut);
-        wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
-        By by = By.id(id);
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
+    }
+
+    private WebElement waitForElementAndClear(By by, String errMessage, int timeOut){
+        WebElement element = waitForElementPresent(by,errMessage,timeOut);
+        element.clear();
+        return element;
     }
 }
