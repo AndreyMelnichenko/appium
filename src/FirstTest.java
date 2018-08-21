@@ -103,6 +103,18 @@ public class FirstTest {
         Assert.assertEquals("We see unexpexted text",element.getAttribute("text"),"Java (programming language)");
     }
 
+    @Test
+    public void inputPlaceHolder(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        WebElement element = waitForElementPresent(By.xpath("//*[contains(@text, 'Search…')]"),
+                "search area not found");
+        Assert.assertEquals("We see unexpexted text",element.getAttribute("text"),"Search…");
+    }
+
     private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
