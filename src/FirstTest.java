@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -113,6 +114,36 @@ public class FirstTest {
         WebElement element = waitForElementPresent(By.xpath("//*[contains(@text, 'Search…')]"),
                 "search area not found");
         Assert.assertEquals("We see unexpexted text",element.getAttribute("text"),"Search…");
+    }
+
+    @Test
+    public void searchResultList(){
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "java",
+                "search area not found",
+                5);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"));
+        Assert.assertNotEquals(0, searchResults.size());
+        waitForElementAndClick(
+                By.className("android.widget.ImageButton"),
+                "Can't find a result",
+                5);
+        Assert.assertTrue(waitForElementNotPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                "element presented",
+                5));
+
     }
 
     private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
