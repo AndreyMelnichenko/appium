@@ -146,6 +146,30 @@ public class FirstTest {
 
     }
 
+    @Test
+    public void resultScan(){
+        String searchWord = "football";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchWord,
+                "search area not found",
+                5);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"));
+        for(WebElement element:searchResults){
+            Assert.assertTrue((element.getAttribute("text").toLowerCase()).contains(searchWord));
+        }
+    }
+
     private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
