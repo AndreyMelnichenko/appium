@@ -111,9 +111,7 @@ public class FirstTest {
                 "first input not found",
                 5);
         driver.hideKeyboard();
-        WebElement element = waitForElementPresent(By.xpath("//*[contains(@text, 'Search…')]"),
-                "search area not found");
-        Assert.assertEquals("We see unexpexted text",element.getAttribute("text"),"Search…");
+        Assert.assertTrue(isTextExist(By.xpath("//*[contains(@text, 'Search…')]"),"Search…"));
     }
 
     @Test
@@ -168,6 +166,10 @@ public class FirstTest {
         for(WebElement element:searchResults){
             Assert.assertTrue((element.getAttribute("text").toLowerCase()).contains(searchWord));
         }
+    }
+
+    private boolean isTextExist(By by, String text){
+        return waitForElementPresent(by, "searched element not presented").getAttribute("text").equals(text);
     }
 
     private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
