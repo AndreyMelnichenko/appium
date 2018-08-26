@@ -11,7 +11,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.sun.jmx.snmp.ThreadContext.contains;
 
 public class FirstTest {
     private AppiumDriver driver;
@@ -131,12 +135,9 @@ public class FirstTest {
                 "java",
                 "search area not found",
                 5);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"));
+        List<WebElement> searchResults = waitForWebElementCollectionPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
+                5);
         Assert.assertNotEquals(0, searchResults.size());
         waitForElementAndClick(
                 By.className("android.widget.ImageButton"),
@@ -162,15 +163,19 @@ public class FirstTest {
                 searchWord,
                 "search area not found",
                 5);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        List<WebElement> searchResults = waitForWebElementCollectionPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                5);
+        List<String> textSearchResult = new ArrayList<>();
+        searchResults.forEach((a)->{
+            if(!(a.getAttribute("text").toLowerCase().contains(searchWord))){
+                textSearchResult.add(a.getAttribute("text").toLowerCase());
+            }
+        });
+        if (textSearchResult.size()!=0){
+            textSearchResult.forEach(System.out::println);
         }
-        List<WebElement> searchResults = driver.findElements(By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"));
-        for(WebElement element:searchResults){
-            Assert.assertTrue((element.getAttribute("text").toLowerCase()).contains(searchWord));
-        }
+        Assert.assertEquals(0,textSearchResult.size());
     }
 
     private boolean isTextExist(By by, String text){
@@ -181,6 +186,12 @@ public class FirstTest {
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    private List<WebElement> waitForWebElementCollectionPresent(By by, int timeOut){
+        WebDriverWait wait = new WebDriverWait(driver, timeOut);
+        wait.withMessage("\n\n\n Element Collection not found \n\n\n");
+        return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
     }
 
     private WebElement waitForElementPresent(By by, String errMessage){
