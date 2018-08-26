@@ -175,7 +175,7 @@ public class FirstTest {
         if (textSearchResult.size()!=0){
             textSearchResult.forEach(System.out::println);
         }
-        Assert.assertEquals(0,textSearchResult.size());
+        Assert.assertEquals("Found unexpected results printed above",0,textSearchResult.size());
     }
 
     private boolean isTextExist(By by, String text){
