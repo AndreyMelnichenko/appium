@@ -22,11 +22,16 @@ public class FirstTest {
 
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","androidTestDevice");
-        capabilities.setCapability("platformVersion","5.0");
+        capabilities.setCapability("platformVersion","5.1");
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","/Users/andrey/git/appium/apks/org.wikipedia.apk");
+
+        if(System.getProperty("os.name").equals("Windows 10")) {
+            capabilities.setCapability("app", "C:\\JavaProjects\\appium\\apks\\org.wikipedia.apk");
+        }else {
+            capabilities.setCapability("app", "/Users/andrey/git/appium/apks/org.wikipedia.apk");
+        }
 
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), capabilities);
     }
