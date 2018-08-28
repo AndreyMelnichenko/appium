@@ -25,7 +25,7 @@ public class FirstTest {
 
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","androidTestDevice");
-        capabilities.setCapability("platformVersion","5.0");
+        capabilities.setCapability("platformVersion","5.1");
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
@@ -313,6 +313,142 @@ public class FirstTest {
                 By.xpath(searchResult),
                 "we found some results "+searchText
         );
+    }
+//------------------------HW-3 ------------------------------
+
+    @Test
+    public void addFewArticles(){
+        String searchText = "Appium";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchText,
+                "search area not found",
+                5);
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '"+searchText+"')]"),
+                "Can't find a result",
+                5);
+        waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Article title not presented",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Context button not found",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find necessary item",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Got it']"),
+                "Cannot find a button GO IT",
+                5
+        );
+        String myList = "my list";
+        waitForElementAndSendKeys(
+                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
+                myList,
+                "Cannot find a input field",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='OK']"),
+                "Cannot find a button Ok",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot X button click",
+                5
+        );
+        //---------------------------Part 2
+        String searchText2 = "Bash";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchText2,
+                "search area not found",
+                5);
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Wikimedia disambiguation page')]"),
+                "Can't find a result",
+                15);
+        waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Article title not presented",
+                15
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
+                "Context button not found",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find necessary item",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_title']"),
+                "Cannot find click fo add second article",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot X button click",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
+                "Cannot click on MY LISTS button",
+                5
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/item_title']"),
+                "Cannot open MY Favorite LISTS",
+                5
+        );
+        swipeElementLeft(
+                By.xpath("//*[@text='"+searchText+"']"),
+                "Cannot swipe left element"
+        );
+
+        assertElementsNotPresent(
+                By.xpath("//*[@text='"+searchText+"']"),
+                "we found some results "+searchText
+        );
+        waitForElementAndClick(
+                By.xpath("//*[@text='"+searchText2+"']"),
+                "Element didnt delete!",
+                5
+        );
+        String articleTitle = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Article title not presented",
+                15
+        ).getAttribute("text");
+        Assert.assertEquals(articleTitle, searchText2);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
