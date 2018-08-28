@@ -443,17 +443,39 @@ public class FirstTest {
                 15
         ).getAttribute("text");
         Assert.assertEquals(articleTitle, searchText2);
+    }
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    @Test
+    public void articleTitleTest(){
+        String searchArticleName = "Appium";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "first input not found",
+                5);
+        driver.hideKeyboard();
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchArticleName,
+                "search area not found",
+                5);
 
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '"+searchArticleName+"')]"),
+                "Can't find a result",
+                5);
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Article title not presented"
+        );
     }
 
     //-------------------- util methods --------------------------------------------------------------------------------
-
+    protected void assertElementPresent(By by, String errorMessage){
+        if(!driver.findElement(by).isDisplayed()){
+            String message = "An elements ["+by.toString()+"] not present";
+            throw new AssertionError(message+" "+errorMessage);
+        }
+    }
     private void assertElementsNotPresent(By by, String errorMessage){
         int amountElements = amountOfElements(by);
         if (amountElements>0){
