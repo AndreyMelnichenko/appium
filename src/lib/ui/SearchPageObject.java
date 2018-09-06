@@ -2,6 +2,9 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 /**
  * created by Andrey Melnichenko at 18:44 06-09-2018
@@ -14,7 +17,9 @@ public class SearchPageObject extends MainPageObject {
         SEARCH_INPUT="//*[contains(@text, 'Search…')]",
         SEARCH_RESULT_TPL ="//*[@resource-id='org.wikipedia:id/page_list_item_description' and contains(@text, '{SUBSTRING}')]",
         SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_SHORT="//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '{SUBSTRING}')]";
+        SEARCH_RESULT_SHORT="//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '{SUBSTRING}')]",
+        SEARCH_RESULT_ELEMETS="//*[@resource-id='org.wikipedia:id/page_list_item_container']",
+        SEARCH_EMPTY_RESULTS="//*[@text='No results found']";
 
     public SearchPageObject(AppiumDriver driver){
         super(driver);
@@ -41,7 +46,7 @@ public class SearchPageObject extends MainPageObject {
 
     public void waitForResult(String substring){
         String finalXpath = substitutor(substring);
-        this.waitForElementPresent(By.xpath(finalXpath), "Cannot find results like "+substring,5);
+        this.waitForElementAndClick(By.xpath(finalXpath), "Cannot find results like "+substring,5);
     }
 
     public void clickByArticleSubString(String substring){
@@ -64,6 +69,21 @@ public class SearchPageObject extends MainPageObject {
 
     public void clickOnCancelButton(){
         this.waitForElementAndClick(By.id(SEARCH_CANCEL_BUTTON), "Cannot find search cancel button", 5);
+    }
+
+    public int getAmountOfObject(){
+        List<WebElement> searchResults = this.waitForWebElementCollectionPresent(
+                By.xpath(SEARCH_RESULT_ELEMETS),
+                5);
+        return searchResults.size();
+    }
+
+    public void waitForEmptyResultsLabel(){
+        this.waitForElementPresent(By.xpath(SEARCH_EMPTY_RESULTS),"Cannot find empty label", 15);
+    }
+
+    public void assertThereIsNoResultSearch(){
+        this.assertElementsNotPresent(By.xpath(SEARCH_RESULT_ELEMETS),"Result elements is present!");
     }
 
 }
