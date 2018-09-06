@@ -18,7 +18,7 @@ public class MainPageObject {
         this.driver=driver;
     }
 
-    private void assertElementPresent(By by, String errorMessage){
+    public void assertElementPresent(By by, String errorMessage){
         String message = "\n\n\nAn elements ["+by.toString()+"] not present\n\n\n";
         try{
             if(!driver.findElement(by).isDisplayed()){
@@ -28,7 +28,7 @@ public class MainPageObject {
             throw new AssertionError(message+" "+errorMessage);
         }
     }
-    private void assertElementsNotPresent(By by, String errorMessage){
+    public void assertElementsNotPresent(By by, String errorMessage){
         int amountElements = amountOfElements(by);
         if (amountElements>0){
             String message = "An elements ["+by.toString()+"] not present";
@@ -41,7 +41,7 @@ public class MainPageObject {
         return elements.size();
     }
 
-    protected void swipeElementLeft(By by, String errorMessage){
+    public void swipeElementLeft(By by, String errorMessage){
         WebElement element = waitForElementPresent(
                 by,
                 "Cannot find element to swipe left \n",
@@ -73,7 +73,7 @@ public class MainPageObject {
         swipeUp(200);
     }
 
-    protected void swipeUpToElement(By by, String errorMessage, int maxSwipes){
+    public void swipeUpToElement(By by, String errorMessage, int maxSwipes){
         int alredySwiped=0;
         while (driver.findElements(by).size() ==0){
             if(alredySwiped>maxSwipes){
@@ -86,45 +86,45 @@ public class MainPageObject {
     }
 
 
-    private boolean isTextExist(By by, String text){
+    public boolean isTextExist(By by, String text){
         return waitForElementPresent(by, "searched element not presented").getAttribute("text").equals(text);
     }
 
-    private WebElement waitForElementPresent(By by, String errMessage, int timeOut){
+    public WebElement waitForElementPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    private List<WebElement> waitForWebElementCollectionPresent(By by, int timeOut){
+    public List<WebElement> waitForWebElementCollectionPresent(By by, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver, timeOut);
         wait.withMessage("\n\n\n Element Collection not found \n\n\n");
         return wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
     }
 
-    private WebElement waitForElementPresent(By by, String errMessage){
+    public WebElement waitForElementPresent(By by, String errMessage){
         return waitForElementPresent(by, errMessage,5);
     }
 
-    private WebElement waitForElementAndClick(By by, String errMessage, int timeOut){
+    public WebElement waitForElementAndClick(By by, String errMessage, int timeOut){
         WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.click();
         return element;
     }
 
-    private WebElement waitForElementAndSendKeys(By by, String value, String errMessage, int timeOut){
+    public WebElement waitForElementAndSendKeys(By by, String value, String errMessage, int timeOut){
         WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.sendKeys(value);
         return element;
     }
 
-    private boolean waitForElementNotPresent(By by, String errMessage, int timeOut){
+    public boolean waitForElementNotPresent(By by, String errMessage, int timeOut){
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
         return wait.until(ExpectedConditions.invisibilityOfElementLocated(by));
     }
 
-    private WebElement waitForElementAndClear(By by, String errMessage, int timeOut){
+    public WebElement waitForElementAndClear(By by, String errMessage, int timeOut){
         WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.clear();
         return element;
