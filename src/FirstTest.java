@@ -1,7 +1,5 @@
 import lib.CoreTestCase;
-import lib.ui.ArticlePageObject;
-import lib.ui.MainPageObject;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -58,51 +56,20 @@ public class FirstTest extends CoreTestCase {
         Assert.assertTrue(mainPageObject.isTextExist(By.xpath("//*[contains(@text, 'Search…')]"),"Search…"));
     }
 
-    @Test
-    public void testSearchResultList(){
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "first input not found",
-                5);
-        driver.hideKeyboard();
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                "java",
-                "search area not found",
-                5);
-        List<WebElement> searchResults = mainPageObject.waitForWebElementCollectionPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
-                5);
-        Assert.assertNotEquals(0, searchResults.size());
-        mainPageObject.waitForElementAndClick(
-                By.className("android.widget.ImageButton"),
-                "Can't find a result",
-                5);
-        Assert.assertTrue(mainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']"),
-                "element presented",
-                5));
-    }
-
-    @Test
+    @Test//HW
     public void testResultScan(){
-        String searchWord = "football";
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "first input not found",
-                5);
-        driver.hideKeyboard();
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                searchWord,
-                "search area not found",
-                5);
+        String searchLine = "football";
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSerachInput();
+        searchPageObject.typeSearchLine(searchLine);
+
         List<WebElement> searchResults = mainPageObject.waitForWebElementCollectionPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
                 6);
         List<String> textSearchResult = new ArrayList<>();
         searchResults.forEach((a)->{
-            if(!(a.getAttribute("text").toLowerCase().contains(searchWord))){
+            if(!(a.getAttribute("text").toLowerCase().contains(searchLine))){
                 textSearchResult.add(a.getAttribute("text").toLowerCase());
             }
         });
@@ -111,6 +78,29 @@ public class FirstTest extends CoreTestCase {
         }
         Assert.assertEquals("\n\n\nFound unexpected results printed above\n\n\n",0,textSearchResult.size());
     }
+
+    @Test
+    public void testSearchResultList(){
+        String searchLine = "java";
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSerachInput();
+        searchPageObject.typeSearchLine(searchLine);
+        int amountOfResults = searchPageObject.getAmountOfObject();
+
+        Assert.assertTrue("We Found few results", amountOfResults>0);
+    }
+
+    @Test
+    public void testEmptyResultList(){
+        String searchLine = "Ja045j045t450gva";
+
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSerachInput();
+        searchPageObject.typeSearchLine(searchLine);
+        searchPageObject.waitForEmptyResultsLabel();
+        searchPageObject.assertThereIsNoResultSearch();
+    }
+
 
     @Test//-------*********-----------
     public void testSwipeArticle(){
@@ -127,110 +117,24 @@ public class FirstTest extends CoreTestCase {
 
     @Test
     public void testAddArticleToList(){
-        String searchText = "Appium";
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "first input not found",
-                5);
-        driver.hideKeyboard();
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                searchText,
-                "search area not found",
-                5);
+        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        searchPageObject.initSerachInput();
+        searchPageObject.typeSearchLine("java");
+        searchPageObject.waitForResult("Object-oriented programming language");
 
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title' and contains(@text, '"+searchText+"')]"),
-                "Can't find a result",
-                5);
-        mainPageObject.waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Article title not presented",
-                15
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageView[@content-desc='More options']"),
-                "Context button not found",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Add to reading list']"),
-                "Cannot find necessary item",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='Got it']"),
-                "Cannot find a button GO IT",
-                5
-        );
+        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        articlePageObject.waitForTitleElement();
+        String articleTitle = articlePageObject.articleTitle();
+        String myFolderName = "My-Folder";
+        articlePageObject.addArticleToMyList(myFolderName);
+        articlePageObject.closeArticle();
+        NavigationUi navigationUi = new NavigationUi(driver);
 
-        mainPageObject.waitForElementAndClear(
-                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
-                "Cannot clear an input area",
-                5
-        );
-        String myList = "my list";
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[@resource-id='org.wikipedia:id/text_input']"),
-                myList,
-                "Cannot find a input field",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='OK']"),
-                "Cannot find a button Ok",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
-                "Cannot X button click",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//android.widget.FrameLayout[@content-desc='My lists']"),
-                "Cannot click on MY LISTS button",
-                5
-        );
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[@text='"+myList+"']"),
-                "Cannot name of my LIST",
-                5
-        );
-        mainPageObject.swipeElementLeft(
-                By.xpath("//*[@text='"+searchText+"']"),
-                "Cannot swipe left element"
-        );
-        mainPageObject.waitForElementNotPresent(
-                By.xpath("//*[@text='"+searchText+"']"),
-                "Element didnt delete!",
-                15
-        );
-    }
+        navigationUi.clickMyList();
+        MyListPageObject myListPageObject = new MyListPageObject(driver);
 
-    @Test
-    public void testEmptyResultTest(){
-        String searchText = "Ja045j045t450gva";
-        mainPageObject.waitForElementAndClick(
-                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
-                "first input not found",
-                5);
-        driver.hideKeyboard();
-        mainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                searchText,
-                "search area not found",
-                5);
-        String searchResult = "//*[@resource-id='org.wikipedia:id/page_list_item_container']";
-        String emptyResultLabel = "//*[@text='No results found']";
-        mainPageObject.waitForElementPresent(
-                By.xpath(emptyResultLabel),
-                "Cannot empty result label found",
-                15
-        );
-        mainPageObject.assertElementsNotPresent(
-                By.xpath(searchResult),
-                "we found some results "+searchText
-        );
+        myListPageObject.openFolderByName(myFolderName);
+        myListPageObject.swipeArticleToDelete(articleTitle);
     }
 //------------------------HW-3 ------------------------------
 
