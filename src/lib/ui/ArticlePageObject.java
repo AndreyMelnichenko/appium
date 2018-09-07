@@ -18,6 +18,7 @@ public class ArticlePageObject extends MainPageObject {
         ADD_TO_MY_LIST="//*[@text='Got it']",
         CLEAR_INPUT_FIELD="//*[@resource-id='org.wikipedia:id/text_input']",
         OK_BUTTON="//*[@text='OK']",
+        EXISTS_MY_LIST="//*[@resource-id='org.wikipedia:id/item_title']",
         CLOSE_ARTICLE_BUTTON="//android.widget.ImageButton[@content-desc='Navigate up']";
 
 
@@ -28,6 +29,13 @@ public class ArticlePageObject extends MainPageObject {
 
     public WebElement waitForTitleElement(){
         return this.waitForElementPresent(By.id(TITLE), "search area not found", 15);
+    }
+
+    public boolean assertArticleTitlePresent(){
+        return this.waitForElementPresent(
+                By.id(TITLE),
+                "Article title not presented"
+                ).isDisplayed();
     }
 
     public String articleTitle(){
@@ -72,6 +80,25 @@ public class ArticlePageObject extends MainPageObject {
                 "Cannot find a button Ok",
                 5
         );
+    }
+
+    public void addArticleToMyList(){
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS),
+                "Context button not found",
+                5
+        );
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_MY_LIST),
+                "Cannot find necessary item",
+                5
+        );
+        this.waitForElementAndClick(
+                By.xpath(EXISTS_MY_LIST),
+                "Cannot find click fo add second article",
+                5
+        );
+
     }
 
     public void closeArticle(){

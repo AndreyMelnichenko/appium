@@ -85,7 +85,6 @@ public class MainPageObject {
         }
     }
 
-
     public boolean isTextExist(By by, String text){
         return waitForElementPresent(by, "searched element not presented").getAttribute("text").equals(text);
     }
