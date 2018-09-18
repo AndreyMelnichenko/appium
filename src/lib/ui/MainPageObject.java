@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class MainPageObject {
     protected AppiumDriver driver;
@@ -89,7 +90,9 @@ public class MainPageObject {
         return waitForElementPresent(by, "searched element not presented").getAttribute("text").equals(text);
     }
 
-    public WebElement waitForElementPresent(By by, String errMessage, int timeOut){
+    public WebElement waitForElementPresent(String locator, String errMessage, int timeOut){
+
+        By by = this.getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver,timeOut);
         wait.withMessage("\n\n\n"+errMessage+"\n\n\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
@@ -127,5 +130,19 @@ public class MainPageObject {
         WebElement element = waitForElementPresent(by,errMessage,timeOut);
         element.clear();
         return element;
+    }
+
+    private By getLocatorByString(String locator_with_type){
+        String[] exploded_locator = locator_with_type.split(Pattern.quote(":"),2);
+        String by_type = exploded_locator[0];
+        String locator = exploded_locator[1];
+
+        if (by_type.equals("xpath")){
+            return By.xpath(locator);
+        }else if(by_type.equals("id")){
+            return By.id(locator);
+        }else {
+            throw new IllegalArgumentException("Cannot get type of locator "+locator_with_type);
+        }
     }
 }
