@@ -11,7 +11,7 @@ import org.junit.Test;
 public class GetStartedTest extends iOSTestCase {
 
     @Test
-    public void testPassThroughWlcome(){
+    public void testPassThroughWelcome(){
         WelcomePageObject welcomePageObject = new WelcomePageObject(driver);
         welcomePageObject.firstScreen();
         welcomePageObject.clickNextButton();
