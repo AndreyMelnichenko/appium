@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1279.0" y="233.0">lib.ui.WelcomePageObject</node>
+    <node x="1625.0" y="298.5">lib.CoreTestCase</node>
+    <node x="657.0" y="194.0">lib.ui.ArticlePageObject</node>
+    <node x="1558.6208333333332" y="590.0">tests.iOS.GetStartedTest</node>
+    <node x="1819.5" y="0.0">junit.framework.TestCase</node>
+    <node x="1529.5" y="0.5">lib.Platform</node>
+    <node x="738.6208333333332" y="590.0">FirstTest</node>
+    <node x="1861.0" y="298.5">lib.iOSTestCase</node>
+    <node x="990.0" y="298.0">lib.ui.NavigationUi</node>
+    <node x="327.0" y="194.0">lib.ui.SearchPageObject</node>
+    <node x="666.0958333333332" y="13.0">lib.ui.MainPageObject</node>
+    <node x="0.0" y="285.0">lib.ui.MyListPageObject</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="FirstTest" target="lib.CoreTestCase">
+      <point x="53.09999999999991" y="-17.5" />
+      <point x="850.7208333333331" y="550.0" />
+      <point x="1705.25" y="550.0" />
+      <point x="-26.75" y="43.5" />
+    </edge>
+    <edge source="lib.ui.WelcomePageObject" target="lib.ui.MainPageObject">
+      <point x="-81.5" y="-109.0" />
+      <point x="1360.5" y="144.0" />
+      <point x="916.8458333333332" y="144.0" />
+      <point x="103.25" y="44.0" />
+    </edge>
+    <edge source="lib.CoreTestCase" target="junit.framework.TestCase">
+      <point x="71.33333333333331" y="-43.5" />
+      <point x="1803.3333333333333" y="174.0" />
+      <point x="1869.0" y="174.0" />
+      <point x="-49.5" y="57.0" />
+    </edge>
+    <edge source="tests.iOS.GetStartedTest" target="lib.CoreTestCase">
+      <point x="20.25" y="-17.5" />
+      <point x="1659.8708333333332" y="560.0" />
+      <point x="1758.75" y="560.0" />
+      <point x="26.75" y="43.5" />
+    </edge>
+    <edge source="lib.iOSTestCase" target="junit.framework.TestCase">
+      <point x="0.0" y="-43.5" />
+      <point x="49.5" y="57.0" />
+    </edge>
+    <edge source="FirstTest" target="lib.ui.NavigationUi">
+      <point x="29.5" y="-17.5" />
+      <point x="827.1208333333332" y="530.0" />
+      <point x="1191.75" y="530.0" />
+      <point x="67.25" y="44.0" />
+    </edge>
+    <edge source="FirstTest" target="lib.ui.SearchPageObject">
+      <point x="-17.700000000000045" y="-17.5" />
+      <point x="779.9208333333331" y="540.0" />
+      <point x="559.5" y="540.0" />
+      <point x="77.5" y="148.0" />
+    </edge>
+    <edge source="FirstTest" target="lib.ui.MyListPageObject">
+      <point x="-53.09999999999991" y="-17.5" />
+      <point x="744.5208333333333" y="570.0" />
+      <point x="76.75" y="570.0" />
+      <point x="-76.75" y="57.0" />
+    </edge>
+    <edge source="lib.ui.MyListPageObject" target="lib.ui.MainPageObject">
+      <point x="-76.75" y="-57.0" />
+      <point x="76.75" y="134.0" />
+      <point x="680.8458333333332" y="134.0" />
+      <point x="-132.75" y="44.0" />
+    </edge>
+    <edge source="FirstTest" target="lib.ui.ArticlePageObject">
+      <point x="5.900000000000091" y="-17.5" />
+      <point x="803.5208333333333" y="510.0" />
+      <point x="891.75" y="510.0" />
+      <point x="78.25" y="148.0" />
+    </edge>
+    <edge source="lib.ui.SearchPageObject" target="lib.ui.MainPageObject">
+      <point x="-77.5" y="-148.0" />
+      <point x="404.5" y="154.0" />
+      <point x="739.8458333333332" y="154.0" />
+      <point x="-73.75" y="44.0" />
+    </edge>
+    <edge source="lib.CoreTestCase" target="lib.Platform">
+      <point x="0.0" y="-43.5" />
+      <point x="67.5" y="56.5" />
+    </edge>
+    <edge source="lib.ui.ArticlePageObject" target="lib.ui.MainPageObject">
+      <point x="78.25" y="-148.0" />
+      <point x="891.75" y="174.0" />
+      <point x="828.3458333333332" y="174.0" />
+      <point x="14.75" y="44.0" />
+    </edge>
+    <edge source="lib.ui.NavigationUi" target="lib.ui.MainPageObject">
+      <point x="67.25" y="-44.0" />
+      <point x="1191.75" y="154.0" />
+      <point x="887.3458333333332" y="154.0" />
+      <point x="73.75" y="44.0" />
+    </edge>
+    <edge source="tests.iOS.GetStartedTest" target="lib.ui.WelcomePageObject">
+      <point x="-20.25" y="-17.5" />
+      <point x="1619.3708333333332" y="520.0" />
+      <point x="1523.5" y="520.0" />
+      <point x="81.5" y="109.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.7000000000000001" x="973.5" y="342.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -12,7 +12,7 @@ public class ArticlePageObject extends MainPageObject {
     private static final String
         TITLE="id:org.wikipedia:id/view_page_title_text",
         FOOTER="xpath://*[@text='View page in browser']",
-        OPTIONS="id://android.widget.ImageView[@content-desc='More options']",
+        OPTIONS="xpath://android.widget.ImageView[@content-desc='More options']",
         OPTIONS_ADD_TO_MY_LIST="xpath://*[@text='Add to reading list']",
         ADD_TO_MY_LIST="xpath://*[@text='Got it']",
         CLEAR_INPUT_FIELD="xpath://*[@resource-id='org.wikipedia:id/text_input']",

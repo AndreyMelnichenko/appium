@@ -12,7 +12,7 @@ public class CoreTestCase extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        this.platform=new Platform();
+        this.platform = new Platform();
         driver = this.platform.getDriver();
         this.rotateScreenPortrait();
     }
