@@ -1,12 +1,10 @@
 import lib.CoreTestCase;
-import lib.ui.*;
+import lib.ui.ArticlePageObject;
+import lib.ui.MyListPageObject;
+import lib.ui.NavigationUi;
+import lib.ui.SearchPageObject;
 import org.junit.Assert;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FirstTest extends CoreTestCase {
 

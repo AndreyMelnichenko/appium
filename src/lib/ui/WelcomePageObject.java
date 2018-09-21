@@ -1,7 +1,6 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 /**
  * created by Andrey Melnichenko at 18:20 18-09-2018
@@ -12,27 +11,35 @@ public class WelcomePageObject extends MainPageObject {
         super(driver);
     }
 
+    private static final String
+        FIRST_SCREEN_LINK="id:Learn more about Wikipedia",
+        FIRST_SCREEN_NEXT="id:Next",
+        SECOND_SCREEN_LINK="id:New ways to explore",
+        THIRD_SCREEN_LINK="id:Add or edit preferred languages",
+        FOUR_SCREEN_LINK="id:Learn more about data collected",
+        GET_STARTED_BUTTON="id:Get started";
+
     public void firstScreen(){
-        this.waitForElementPresent(By.id("Learn more about Wikipedia"), "Cannot find Wiki learn more link", 10);
+        this.waitForElementPresent(FIRST_SCREEN_LINK, "Cannot find Wiki learn more link", 10);
     }
 
     public void clickNextButton(){
-        this.waitForElementAndClick(By.id("Next"), "Cannot find NEXT button", 10);
+        this.waitForElementAndClick(FIRST_SCREEN_NEXT, "Cannot find NEXT button", 10);
     }
 
     public void secondScreen(){
-        this.waitForElementPresent(By.id("New ways to explore"), "Cannot find Second Screen TEXT", 10);
+        this.waitForElementPresent(SECOND_SCREEN_LINK, "Cannot find Second Screen TEXT", 10);
     }
 
     public void thirdScreen(){
-        this.waitForElementPresent(By.id("Add or edit preferred languages"), "Cannot find Third Screen TEXT", 10);
+        this.waitForElementPresent(THIRD_SCREEN_LINK, "Cannot find Third Screen TEXT", 10);
     }
 
     public void fourScreen(){
-        this.waitForElementPresent(By.id("Learn more about data collected"), "Cannot find Four Screen TEXT", 10);
+        this.waitForElementPresent(FOUR_SCREEN_LINK, "Cannot find Four Screen TEXT", 10);
     }
 
     public void clickGetStartedButton(){
-        this.waitForElementAndClick(By.id("Get started"), "Cannot find Get started button", 15);
+        this.waitForElementAndClick(GET_STARTED_BUTTON, "Cannot find Get started button", 15);
     }
 }
